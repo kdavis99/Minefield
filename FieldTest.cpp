@@ -38,6 +38,37 @@ TEST(FieldTest, isSafeOutOfBounds)
 	ASSERT_EQ(false, minefield.isSafe(10,-1));
 }
 
+TEST(FieldTest, getOnMine)
+{
+	Field minefield;
+   minefield.placeMine(2,3);
+
+	ASSERT_EQ(MINE_HIDDEN, minefield.get(2,3));
+}
+
+TEST(FieldTest, getOnNoMine)
+{
+	Field minefield;
+
+	ASSERT_EQ(EMPTY_HIDDEN, minefield.get(2,3));
+}
+
+TEST(FieldTest, getOnException)
+{
+	Field minefield;
+  
+   throw std::invalid_argument("Out of bounds");
+
+   ASSERT_THROW(minefield.get(-1,0), std::invalid_argument);
+}
+
+TEST(FieldTest, revealAdj) {
+   Field minefield;
+   minefield.placeMine(4,5);
+   minefield.revealAdjacent(4,6);
+   ASSERT_EQ(EMPTY_SHOWN, minefield.get(4,7));
+}
+
 TEST(FieldTest, placeMineInBounds)
 {
 	Field minefield;
